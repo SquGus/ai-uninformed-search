@@ -1,22 +1,36 @@
 # https://www.alphagrader.com/courses/6/assignments/11
 import re
 
-def input_to_state(input_string):
-	stacks = ()
-	for stack_string in input_string.split('; '):
-		stacks += (stack_string, )
+# takes input and returns a list of lists
+def input_to_stacks(input_string):
+	stacks = []
+	for stack_string in input_string.split(';'):
+		stacks.append([ box for box in re.sub(r'[ ()]','',stack_string).split(',')])
+	for i,stack in enumerate(stacks):
+		if stack[0] == 'X':
+			stacks[i] = 'X'
 	return stacks
 
-def input_to_stacks(state_array):
+# takes list of lists and returns a tuple of tuples
+def stack_to_state(stacks):
+	state = ()
+	for stack in stacks:
+		column = ()
+		for box in stack:
+			column += (box, )
+		state += (column, )
+
+	return state
+
+# takes tuple of tuples and returns a list of lists
+def state_to_stack(state):
 	stacks = []
-	for i, box in enumerate(state_array):
+	for i,column in enumerate(state):
 		stacks.append([])
-		box = box.replace("(", "")
-		box = box.replace(")", "")
-		box = box.replace(" ", "")
-		for item in box.split(","):
-			stacks[i].append(item)
+		for j in column:
+			stacks[i].append(j)
 	return stacks
+
 
 def move_box(current,neu_position,stacks):
 	neu_stacks = list(stacks)
@@ -41,48 +55,60 @@ def test_goal(stacks,goal_stacks):
 	return valid
 
 def expand_nodes(max_height,stacks,goal_stacks):
-	visited = {}
-	initial_stacks = (stacks, 0)
+	visited = set()
+	initial_stacks = (stacks,0)
 	dfs_stack = [initial_stacks]
 
 	while True:
 		if len(dfs_stack) == 0:
-			return False #por el momento
+			return False #por elmomento
 		current_state = dfs_stack.pop()
-		print(current_state)
-
 		current_stack = current_state[0]
-		print(current_stack)
-		
-		if test_goal(current_stack, goal_stacks):
+		if test_goal(current_stack,goal_stacks):
 			return True
-		visited[current_state] = current_stack
+		visited.add(current_stack)
 
 		for i,box in enumerate(current_stack):
 			for j in len(current_stack):
 				if i != j and len(current_stack[j]) < max_height:
 					neu_stacks, cost = move_box(i,j,current_stack)
-					visited[(neu_stacks, cost)] = (neu_stacks)
+					visited.add(neu_stacks)
 					dfs_stack.append((neu_stacks,cost+current_state[1]))
+
+def bfs_search(max_height, current_state, goal_state):
+	visited_states = set()
+	node = (current_state, 0)
+	if (test_goal(current_state, goal_state)):
+		return True
+	bfs_frontier = [node]
+
+	while True:
+		if len(bfs_frontier) == 0:
+			return False
+		node = bfs_frontier.pop()
+		visited_states.add(node[0])
+		for i,box in enumerate(node[0]):
+			print(i)
+			print(box)
+			# for j in len(node[0]):
+			# 	if i != j and len(node[0][j]) < max_height:
+			# 		child_node = move(i, j, node[0][j]) 
+
 
 
 max_height = int(input())
-initial_state = input_to_state(input())
-goal_state = input_to_state(input())
-stacks = input_to_stacks(goal_state)
+stacks = input_to_stacks(input())
+goal_stacks = input_to_stacks(input())
 
-print(initial_state)
-print(goal_state)
+initial_state = stack_to_state(stacks)
+goal_state = stack_to_state(goal_stacks)
 
-for stack in goal_state:
-	print(stack)
-# stacks_original = list(stacks)
-
-# expand_nodes(max_height, stacks, goal_stacks)
+# expand_nodes(max_height,stacks,goal_stacks)
+bfs_search(max_height, initial_state, goal_state)
 
 # graph = {stacks:[]}
 
-#FALTA CREAR LA BUSQUEDA QUE PARA CADA STACK INTENTE MOVER A LOS OTROS STACKS
+#FALTA CREAR LA VUSQUEDA QUE PARA CADA STACK INTENTE MOVER A LOS OTROS STACKS
 # search = []
 # actions for for
 # movements = []

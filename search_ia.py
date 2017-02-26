@@ -2,6 +2,7 @@
 import re
 import time
 import copy
+from queue import PriorityQueue
 
 def input_to_stacks(input_string):
 	stacks = []
@@ -237,6 +238,94 @@ def bfs(max_height,stacks,goal_stacks):
 						queue.insert(0,neu_state)
 
 
+
+def uniform_cost(max_height,stacks,goal_stacks):
+	initial_state = stack_to_state(stacks)
+	moves = {initial_state: [(),0,(0,0), False]}
+	queue = PriorityQueue()
+	queue.put((0, initial_state))
+
+	while True:
+		if queue.empty():
+			return 'No solution found'
+		current_state = queue.get()[1]
+		moves[current_state][3] = True
+
+		for i,box in enumerate(current_state):
+			for j in range(len(current_state)):
+				if i != j and len(current_state[j]) < max_height and len(current_state[i]) > 0:
+					neu_stacks, cost = move_box(i,j,state_to_stack(current_state))
+					#if not visitado
+					neu_state = stack_to_state(neu_stacks)
+					if neu_state not in moves.keys():
+						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						if test_goal(neu_stacks, goal_stacks):
+							return moves[neu_state], track_moves(neu_state,moves)
+						queue.put((cost+moves[current_state][1],neu_state))
+
+
+def cons_heuristic_cost(current_stacks,goal_stacks):
+	return 0
+
+def incons_heuristic_cost():
+	return 0
+
+def a_star_cons(max_height,stacks,goal_stacks):
+	initial_state = stack_to_state(stacks)
+	moves = {initial_state: [(),0,(0,0), False]}
+	queue = PriorityQueue()
+	queue.put((0, initial_state))
+
+	while True:
+		if queue.empty():
+			return 'No solution found'
+		current_state = queue.get()[1]
+		moves[current_state][3] = True
+
+		for i,box in enumerate(current_state):
+			for j in range(len(current_state)):
+				if i != j and len(current_state[j]) < max_height and len(current_state[i]) > 0:
+					neu_stacks, cost = move_box(i,j,state_to_stack(current_state))
+					#if not visitado
+					neu_state = stack_to_state(neu_stacks)
+					if neu_state not in moves.keys():
+						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						if test_goal(neu_stacks, goal_stacks):
+							return moves[neu_state], track_moves(neu_state,moves)
+						current_cost = cost+moves[current_state][1]
+						priority_cost = current_cost + cons_heuristic_cost()
+						queue.put((priority_cost,neu_state))
+
+
+
+def a_star_incons(max_height,stacks,goal_stacks):
+	initial_state = stack_to_state(stacks)
+	moves = {initial_state: [(),0,(0,0), False]}
+	queue = PriorityQueue()
+	queue.put((0, initial_state))
+
+	while True:
+		if queue.empty():
+			return 'No solution found'
+		current_state = queue.get()[1]
+		moves[current_state][3] = True
+
+		for i,box in enumerate(current_state):
+			for j in range(len(current_state)):
+				if i != j and len(current_state[j]) < max_height and len(current_state[i]) > 0:
+					neu_stacks, cost = move_box(i,j,state_to_stack(current_state))
+					#if not visitado
+					neu_state = stack_to_state(neu_stacks)
+					if neu_state not in moves.keys():
+						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						if test_goal(neu_stacks, goal_stacks):
+							return moves[neu_state], track_moves(neu_state,moves)
+						current_cost = cost+moves[current_state][1]
+						priority_cost = current_cost + incons_heuristic_cost()
+						queue.put((priority_cost,neu_state))
+
+
+
 					# 		# cost+current_state[1], track_moves(neu_stacks,moves)
 
 
@@ -276,16 +365,31 @@ goal_stacks = input_to_stacks(input())
 # falta guardar el historial
 print(stacks)
 
-print("BFS")
-cost, moves = bfs(max_height,stacks,goal_stacks)
-print(cost)
-print(moves)
 
 print("DFS")
 cost, moves = dfs(max_height,stacks,goal_stacks)
 print(cost)
 print(moves)
 
+print("BFS")
+cost, moves = bfs(max_height,stacks,goal_stacks)
+print(cost)
+print(moves)
+
+print("A*: Uniform Cost")
+print(uniform_cost(max_height,stacks,goal_stacks))
+print(cost)
+print(moves)
+
+print("A*: Cons")
+print(a_star_cons(max_height,stacks,goal_stacks))
+print(cost)
+print(moves)
+
+print("A*: Incons")
+print(a_star_incons(max_height,stacks,goal_stacks))
+print(cost)
+print(moves)
 
 
 print(goal_stacks)

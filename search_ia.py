@@ -185,7 +185,19 @@ def cons_heuristic_cost(current_stacks,goal_stacks):
 	return total
 
 def incons_heuristic_cost(current_stacks,goal_stacks):
-	return 0
+	# calcular manhattan?
+	# Se esta calculando a partir de cuantos stacks se tiene que mover cada caja
+	total = 0
+	for i,stack in enumerate(goal_stacks):
+		if stack == 'X':
+			pass
+		else:
+			for j,box in enumerate(stack):
+				for k, current_stack in enumerate(current_stacks):
+					if box in current_stack:
+						total += abs(k-i)
+	return total
+
 
 def a_star_cons(max_height,stacks,goal_stacks):
 	initial_state = stack_to_state(stacks)

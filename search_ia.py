@@ -85,37 +85,12 @@ def track_moves(state,moves):
 	current = moves[state]
 	search_string = str(current[2])
 	while True:
-		if current[0] in moves.keys():
+		if current[0] not in moves.keys():
 			break
 		current = moves[current[0]]
-		search_string = str(current[2]) + ';' + search_string
+		if current[0] in moves.keys():
+			search_string = str(current[2]) + ';' + search_string
 	return search_string
-
-
-
-
-# def dfs(max_height,stacks,goal_stacks):
-# 	visited = set()
-# 	initial_stacks = (stacks,0)
-# 	dfs_stack = [initial_stacks]
-# 	stacks = [stacks]
-# 	while True:
-# 		if len(dfs_stack) == 0:
-# 			return 'No solution found'
-# 		current_state = dfs_stack.pop()
-# 		current_stack = stacks.pop()
-# 		visited.add(str(current_stack))
-# 		for i,box in enumerate(current_stack):
-# 			for j in range(len(current_stack)):
-# 				if i != j and len(current_stack[j]) < max_height and len(current_stack[i]) > 0:
-# 					current_stack_copy = copy.deepcopy(current_stack)
-# 					neu_stacks, cost = move_box(i,j,current_stack_copy)
-# 					if str(neu_stacks) not in visited or not test_in_list(neu_stacks, stacks):
-# 						if test_goal(neu_stacks,goal_stacks):
-# 							return neu_stacks, cost+current_state[1]
-# 						if check_better_cost(neu_stacks,cost+current_state[1], dfs_stack):
-# 							dfs_stack.append((neu_stacks,cost+current_state[1]))
-# 							stacks.append(neu_stacks)
 
 
 def dfs(max_height,stacks,goal_stacks):
@@ -137,81 +112,10 @@ def dfs(max_height,stacks,goal_stacks):
 					neu_state = stack_to_state(neu_stacks)
 					if neu_state not in moves.keys():
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
-							return moves[neu_state], track_moves(neu_state,moves)
+							return current_cost, track_moves(neu_state,moves)
 						stack.append(neu_state)
-
-
-
-# def bfs(max_height,stacks,goal_stacks):
-# 	visited = set()
-# 	initial_stacks = (stacks,0)
-# 	bfs_q = [initial_stacks]
-# 	queue = [stacks]
-# 	moves = {str(stacks): 0}
-# 	# initial_node = str(copy.deepcopy(stacks)) 
-# 	# moves = {initial_node: 0}
-# 	step = 0
-# 	while True:
-# 		if len(bfs_q) == 0:
-# 			return 'No solution found'
-# 		current_state = bfs_q.pop()
-# 		current_stack = queue.pop()
-# 		visited.add(str(current_stack))
-# 		step += 1
-# 		# if step%1000 == 0:
-# 			# print("Step ", step)
-# 		for i,box in enumerate(current_stack):
-# 			for j in range(len(current_stack)):
-# 				if i != j and len(current_stack[j]) < max_height and len(current_stack[i]) > 0:
-# 					# copy to not change the original list
-# 					current_stack_copy = copy.deepcopy(current_stack) 
-# 					neu_stacks, cost = move_box(i,j,current_stack_copy)
-# 					if str(neu_stacks) not in visited or not test_in_list(neu_stacks, queue):
-# 						if test_goal(neu_stacks,goal_stacks):
-# 							moves[str(neu_stacks)] = (str(current_stack),(i,j))
-# 							return neu_stacks, cost+current_state[1], track_moves(neu_stacks,moves)
-# 						if check_better_cost(neu_stacks,cost+current_state[1], bfs_q):
-
-# 							moves[str(neu_stacks)] = (str(current_stack),(i,j))
-
-# 							bfs_q.insert(0,(neu_stacks,cost+current_state[1]))
-# 							queue.insert(0,neu_stacks)
-
-# def bfs(max_height,stacks,goal_stacks):
-# 	visited = set()
-# 	initial_stacks = (stacks,0)
-# 	bfs_q = [initial_stacks]
-# 	queue = [stacks]
-# 	moves = {str(stacks): ''}
-
-# 	while True:
-# 		if len(bfs_q) == 0:
-# 			return 'No solution found'
-# 		current_state = bfs_q.pop()
-# 		current_stack = queue.pop()
-# 		visited.add(str(current_stack))
-# 		# step += 1
-# 		# if step%1000 == 0:
-# 			# print("Step ", step)
-# 		for i,box in enumerate(current_stack):
-# 			for j in range(len(current_stack)):
-# 				if i != j and len(current_stack[j]) < max_height and len(current_stack[i]) > 0:
-# 					# copy to not change the original list
-# 					current_stack_copy = copy.deepcopy(current_stack) 
-# 					neu_stacks, cost = move_box(i,j,current_stack_copy)
-# 					if str(neu_stacks) not in visited or not test_in_list(neu_stacks, queue):
-# 						if test_goal(neu_stacks,goal_stacks):
-# 							moves[str(neu_stacks)] = (str(current_stack),(i,j))
-# 							return cost+current_state[1], track_moves(neu_stacks,moves)
-# 						if check_better_cost(neu_stacks,cost+current_state[1], bfs_q):
-# 							state_string = str(neu_stacks)
-# 							if state_string in moves.keys():
-# 								if isinstance(moves[state_string],str):
-# 									moves[str(neu_stacks)] = (str(current_stack),(i,j))
-# 							bfs_q.insert(0,(neu_stacks,cost+current_state[1]))
-# 							queue.insert(0,neu_stacks)
-
 
 
 def bfs(max_height,stacks,goal_stacks):
@@ -233,8 +137,9 @@ def bfs(max_height,stacks,goal_stacks):
 					neu_state = stack_to_state(neu_stacks)
 					if neu_state not in moves.keys():
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
-							return moves[neu_state], track_moves(neu_state,moves)
+							return current_cost, track_moves(neu_state,moves)
 						queue.insert(0,neu_state)
 
 
@@ -247,7 +152,7 @@ def uniform_cost(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return 'No solution found'
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -259,15 +164,27 @@ def uniform_cost(max_height,stacks,goal_stacks):
 					neu_state = stack_to_state(neu_stacks)
 					if neu_state not in moves.keys():
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
+						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
-							return moves[neu_state], track_moves(neu_state,moves)
+							return current_cost, track_moves(neu_state,moves)
 						queue.put((cost+moves[current_state][1],neu_state))
 
 
 def cons_heuristic_cost(current_stacks,goal_stacks):
-	return 0
+	total = 0
+	for i,stack in enumerate(goal_stacks):
+		if stack == 'X':
+			pass
+		else:
+			for j,box in enumerate(stack):
+				try:
+					if stacks[i][j] != box:
+						total += 1
+				except:
+					total += 1
+	return total
 
-def incons_heuristic_cost():
+def incons_heuristic_cost(current_stacks,goal_stacks):
 	return 0
 
 def a_star_cons(max_height,stacks,goal_stacks):
@@ -290,10 +207,10 @@ def a_star_cons(max_height,stacks,goal_stacks):
 					neu_state = stack_to_state(neu_stacks)
 					if neu_state not in moves.keys():
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
-						if test_goal(neu_stacks, goal_stacks):
-							return moves[neu_state], track_moves(neu_state,moves)
 						current_cost = cost+moves[current_state][1]
-						priority_cost = current_cost + cons_heuristic_cost()
+						if test_goal(neu_stacks, goal_stacks):
+							return current_cost, track_moves(neu_state,moves)
+						priority_cost = current_cost + cons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
 
 
@@ -318,40 +235,11 @@ def a_star_incons(max_height,stacks,goal_stacks):
 					neu_state = stack_to_state(neu_stacks)
 					if neu_state not in moves.keys():
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
-						if test_goal(neu_stacks, goal_stacks):
-							return moves[neu_state], track_moves(neu_state,moves)
 						current_cost = cost+moves[current_state][1]
-						priority_cost = current_cost + incons_heuristic_cost()
+						if test_goal(neu_stacks, goal_stacks):
+							return current_cost, track_moves(neu_state,moves)
+						priority_cost = current_cost + incons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
-
-
-
-					# 		# cost+current_state[1], track_moves(neu_stacks,moves)
-
-
-					# known = False
-					# if neu_state in moves.keys():
-					# 	if not moves[neu_state][3]:
-					# 		valid = True
-					# if neu_state not in queue:
-					# 	valid = True
-
-					# # if valid:
-
-
-
-					# if not moves[neu_state][3] or neu_state not in queue:
-					# 	if test_goal(neu_stacks, goal_stacks):
-					# 		moves[str(neu_stacks)] = (str(current_state),(i,j))
-					# 		return cost+current_state[1], track_moves(neu_stacks,moves)
-
-					# 	if check_better_cost(neu_stacks,cost+current_state[1], moves):
-					# 		state_string = str(neu_stacks)
-					# 		if state_string in moves.keys():
-					# 			if isinstance(moves[state_string],str):
-					# 				moves[str(neu_stacks)] = (str(current_state),(i,j))
-							# bfs_q.insert(0,(neu_stacks,cost+current_state[1]))
-							# queue.insert(0,neu_stacks)
 
 
 
@@ -362,34 +250,52 @@ stacks_original = list(stacks)
 goal_stacks = input_to_stacks(input())
 
 
-# falta guardar el historial
 print(stacks)
 
 
 print("DFS")
-cost, moves = dfs(max_height,stacks,goal_stacks)
-print(cost)
-print(moves)
+answer = dfs(max_height,stacks,goal_stacks)
+if answer:
+	cost, moves = answer
+	print(cost)
+	print(moves)
+else:
+	print('No solution found.')
 
 print("BFS")
-cost, moves = bfs(max_height,stacks,goal_stacks)
-print(cost)
-print(moves)
+answer = bfs(max_height,stacks,goal_stacks)
+if answer:
+	cost, moves = answer
+	print(cost)
+	print(moves)
+else:
+	print('No solution found.')
 
 print("A*: Uniform Cost")
-print(uniform_cost(max_height,stacks,goal_stacks))
-print(cost)
-print(moves)
+answer = uniform_cost(max_height,stacks,goal_stacks)
+if answer:
+	cost, moves = answer
+	print(cost)
+	print(moves)
+else:
+	print('No solution found.')
 
 print("A*: Cons")
-print(a_star_cons(max_height,stacks,goal_stacks))
-print(cost)
-print(moves)
+answer = a_star_cons(max_height,stacks,goal_stacks)
+if answer:
+	cost, moves = answer
+	print(cost)
+	print(moves)
+else:
+	print('No solution found.')
 
 print("A*: Incons")
-print(a_star_incons(max_height,stacks,goal_stacks))
-print(cost)
-print(moves)
-
+answer = a_star_incons(max_height,stacks,goal_stacks)
+if answer:
+	cost, moves = answer
+	print(cost)
+	print(moves)
+else:
+	print('No solution found.')
 
 print(goal_stacks)

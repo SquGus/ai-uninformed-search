@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 a_star_incons.py < dummy3.txt
+python3 a_star_incons.py < [input_file]

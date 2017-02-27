@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 run.py < dummy2.txt
+python3 run.py < [input_file]

@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 bfs.py < overview.txt
+python3 bfs.py < [input_file]

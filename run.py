@@ -119,6 +119,6 @@ answer = a_star_cons(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
 	print(cost)
-	print(moves)
+	print(moves,end='')
 else:
-	print('No solution found.')
+	print('No solution found.',end='')

@@ -1,2 +1,3 @@
 #!/bin/sh
+echo $input_files
 python3 run.py < $input_files

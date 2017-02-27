@@ -104,4 +104,4 @@ if answer:
 	print(cost)
 	print(moves,end='')
 else:
-	print('No solution found.',end='')
+	print('No solution found',end='')

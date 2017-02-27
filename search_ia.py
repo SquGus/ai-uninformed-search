@@ -1,5 +1,4 @@
 # https://www.alphagrader.com/courses/6/assignments/11
-import fileinput
 import re
 import time
 import copy
@@ -36,9 +35,11 @@ def state_to_stack(state):
 			stacks[i].append(j)
 	return stacks
 
+
+
 def move_box(current,neu_position,stacks):
 	neu_stacks = stacks[:]
-	cost = int(0.5 + abs(current - neu_position) + 0.5)
+	cost = 0.5 + abs(current - neu_position) + 0.5
 	box = neu_stacks[current].pop()
 	neu_stacks[neu_position].append(box)
 	return neu_stacks, cost
@@ -88,7 +89,7 @@ def track_moves(state,moves):
 			break
 		current = moves[current[0]]
 		if current[0] in moves.keys():
-			search_string = str(current[2]) + '; ' + search_string
+			search_string = str(current[2]) + ';' + search_string
 	return search_string
 
 
@@ -99,7 +100,7 @@ def dfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(stack) == 0:
-			return False
+			return 'No solution found'
 		current_state = stack.pop()
 		moves[current_state][3] = True
 
@@ -124,7 +125,7 @@ def bfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(queue) == 0:
-			return False
+			return 'No solution found'
 		current_state = queue.pop()
 		moves[current_state][3] = True
 
@@ -206,7 +207,7 @@ def a_star_cons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return False
+			return 'No solution found'
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -234,7 +235,7 @@ def a_star_incons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return False
+			return 'No solution found'
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -253,13 +254,15 @@ def a_star_incons(max_height,stacks,goal_stacks):
 						queue.put((priority_cost,neu_state))
 
 
-lines = []
-for line in fileinput.input():
-    lines.append(line)
 
-max_height = int(lines[0])
-stacks = input_to_stacks(lines[1])
-goal_stacks = input_to_stacks(lines[2])
+
+max_height = int(input())
+stacks = input_to_stacks(input())
+stacks_original = list(stacks)
+goal_stacks = input_to_stacks(input())
+
+
+print(stacks)
 
 
 print("DFS")

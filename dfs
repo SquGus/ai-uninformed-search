@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 dfs.py
+python3 dfs.py < dummy1.txt

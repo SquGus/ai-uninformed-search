@@ -1,4 +1,3 @@
-import fileinput
 import re
 
 def input_to_stacks(input_string):
@@ -90,13 +89,9 @@ def dfs(max_height,stacks,goal_stacks):
 						stack.append(neu_state)
 
 
-lines = []
-for line in fileinput.input():
-    lines.append(line)
-
-max_height = int(lines[0])
-stacks = input_to_stacks(lines[1])
-goal_stacks = input_to_stacks(lines[2])
+max_height = int(input())
+stacks = input_to_stacks(input())
+goal_stacks = input_to_stacks(input())
 
 answer = dfs(max_height,stacks,goal_stacks)
 if answer:

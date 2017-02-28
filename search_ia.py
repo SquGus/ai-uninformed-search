@@ -265,7 +265,7 @@ goal_stacks = input_to_stacks(input())
 print(stacks)
 
 
-print("DFS")
+print("\nDFS")
 answer = dfs(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
@@ -274,7 +274,7 @@ if answer:
 else:
 	print('No solution found.')
 
-print("BFS")
+print("\nBFS")
 answer = bfs(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
@@ -283,7 +283,7 @@ if answer:
 else:
 	print('No solution found.')
 
-print("A*: Uniform Cost")
+print("\nA*: Uniform Cost")
 answer = uniform_cost(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
@@ -292,7 +292,7 @@ if answer:
 else:
 	print('No solution found.')
 
-print("A*: Cons")
+print("\nA*: Cons")
 answer = a_star_cons(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
@@ -301,7 +301,7 @@ if answer:
 else:
 	print('No solution found.')
 
-print("A*: Incons")
+print("\nA*: Incons")
 answer = a_star_incons(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer

@@ -260,14 +260,23 @@ def a_star_incons(max_height,stacks,goal_stacks):
 
 
 
-
-max_height = int(input())
-stacks = input_to_stacks(input())
-stacks_original = list(stacks)
-goal_stacks = input_to_stacks(input())
-
+def main():
+	max_height = int(input())
+	stacks = input_to_stacks(input())
+	stacks_original = list(stacks)
+	goal_stacks = input_to_stacks(input())
+	answer = a_star_cons(max_height,stacks,goal_stacks)
+	if answer:
+		cost, moves = answer
+		print(int(cost))
+		print(moves, end='')
+	else:
+		print('No solution found',end='')
 
 # print(stacks)
+
+if __name__ == '__main__':
+	main()
 
 
 # print("\nDFS")
@@ -298,13 +307,7 @@ goal_stacks = input_to_stacks(input())
 # 	print('No solution found',end='')
 
 # print("\nA*: Cons")
-answer = a_star_cons(max_height,stacks,goal_stacks)
-if answer:
-	cost, moves = answer
-	print(int(cost))
-	print(moves, end='')
-else:
-	print('No solution found',end='')
+
 
 # print("\nA*: Incons")
 # answer = a_star_incons(max_height,stacks,goal_stacks)

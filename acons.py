@@ -96,7 +96,7 @@ def a_star_cons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return False'
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 

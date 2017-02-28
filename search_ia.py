@@ -100,7 +100,8 @@ def dfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(stack) == 0:
-			return 'No solution found'
+			print("Nodes: " + str(len(moves)))
+			return False
 		current_state = stack.pop()
 		moves[current_state][3] = True
 
@@ -114,6 +115,7 @@ def dfs(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print("Nodes: " + str(len(moves)))
 							return current_cost, track_moves(neu_state,moves)
 						stack.append(neu_state)
 
@@ -125,7 +127,8 @@ def bfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(queue) == 0:
-			return 'No solution found'
+			print("Nodes: " + str(len(moves)))
+			return False
 		current_state = queue.pop()
 		moves[current_state][3] = True
 
@@ -139,6 +142,7 @@ def bfs(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print("Nodes: " + str(len(moves)))
 							return current_cost, track_moves(neu_state,moves)
 						queue.insert(0,neu_state)
 
@@ -152,6 +156,7 @@ def uniform_cost(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
+			print("Nodes: " + str(len(moves)))
 			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
@@ -166,6 +171,7 @@ def uniform_cost(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print("Nodes: " + str(len(moves)))
 							return current_cost, track_moves(neu_state,moves)
 						queue.put((cost+moves[current_state][1],neu_state))
 
@@ -195,7 +201,7 @@ def incons_heuristic_cost(current_stacks,goal_stacks):
 			for j,box in enumerate(stack):
 				for k, current_stack in enumerate(current_stacks):
 					if box in current_stack:
-						total += abs(k-i)
+						total += (abs(k-i)) * (abs(k-i))
 	return total
 
 
@@ -207,7 +213,8 @@ def a_star_cons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return 'No solution found'
+			print("Nodes: " + str(len(moves)))
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -221,6 +228,7 @@ def a_star_cons(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print("Nodes: " + str(len(moves)))
 							return current_cost, track_moves(neu_state,moves)
 						priority_cost = current_cost + cons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
@@ -235,7 +243,8 @@ def a_star_incons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return 'No solution found'
+			print("Nodes: " + str(len(moves)))
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -249,6 +258,7 @@ def a_star_incons(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print("Nodes: " + str(len(moves)))
 							return current_cost, track_moves(neu_state,moves)
 						priority_cost = current_cost + incons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
@@ -309,5 +319,3 @@ if answer:
 	print(moves)
 else:
 	print('No solution found.')
-
-print(goal_stacks)

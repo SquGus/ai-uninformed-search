@@ -39,7 +39,7 @@ def state_to_stack(state):
 
 def move_box(current,neu_position,stacks):
 	neu_stacks = stacks[:]
-	cost = 0.5 + abs(current - neu_position) + 0.5
+	cost = int(0.5 + abs(current - neu_position) + 0.5)
 	box = neu_stacks[current].pop()
 	neu_stacks[neu_position].append(box)
 	return neu_stacks, cost
@@ -69,7 +69,7 @@ def track_moves(state,moves):
 			break
 		current = moves[current[0]]
 		if current[0] in moves.keys():
-			search_string = str(current[2]) + ';' + search_string
+			search_string = str(current[2]) + '; ' + search_string
 	return search_string
 
 def cons_heuristic_cost(current_stacks,goal_stacks):

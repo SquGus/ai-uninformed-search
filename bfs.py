@@ -1,4 +1,4 @@
-import fileinput
+# https://www.alphagrader.com/courses/6/assignments/11
 import re
 
 def input_to_stacks(input_string):
@@ -32,12 +32,15 @@ def state_to_stack(state):
 			stacks[i].append(j)
 	return stacks
 
+
+
 def move_box(current,neu_position,stacks):
 	neu_stacks = stacks[:]
 	cost = int(0.5 + abs(current - neu_position) + 0.5)
 	box = neu_stacks[current].pop()
 	neu_stacks[neu_position].append(box)
 	return neu_stacks, cost
+
 
 def test_goal(stacks,goal_stacks):
 	valid = True
@@ -54,6 +57,7 @@ def test_goal(stacks,goal_stacks):
 					valid = False
 	return valid
 
+
 def track_moves(state,moves):
 	current = moves[state]
 	search_string = str(current[2])
@@ -64,6 +68,7 @@ def track_moves(state,moves):
 		if current[0] in moves.keys():
 			search_string = str(current[2]) + '; ' + search_string
 	return search_string
+
 
 def bfs(max_height,stacks,goal_stacks):
 	initial_state = stack_to_state(stacks)
@@ -90,18 +95,15 @@ def bfs(max_height,stacks,goal_stacks):
 						queue.insert(0,neu_state)
 
 
-lines = []
-for line in fileinput.input():
-    lines.append(line)
+max_height = int(input())
+stacks = input_to_stacks(input())
+goal_stacks = input_to_stacks(input())
 
-max_height = int(lines[0])
-stacks = input_to_stacks(lines[1])
-goal_stacks = input_to_stacks(lines[2])
 
 answer = bfs(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
 	print(cost)
-	print(moves,end='')
+	print(moves, end='')
 else:
-	print('No solution found',end='')
+	print('No solution found', end='')

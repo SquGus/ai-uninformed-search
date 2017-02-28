@@ -260,11 +260,19 @@ def a_star_incons(max_height,stacks,goal_stacks):
 
 
 
+import fileinput
+
+
 def main():
-	max_height = int(input())
-	stacks = input_to_stacks(input())
+	lines = []
+	for line in fileinput.input():
+	    lines.append(line)
+	lines = list(map(lambda x: x.strip(), lines))
+	# print(lines)
+	max_height = int(lines[0])
+	stacks = input_to_stacks(lines[1])
 	stacks_original = list(stacks)
-	goal_stacks = input_to_stacks(input())
+	goal_stacks = input_to_stacks(lines[2])
 	answer = a_star_cons(max_height,stacks,goal_stacks)
 	if answer:
 		cost, moves = answer
@@ -273,7 +281,22 @@ def main():
 	else:
 		print('No solution found',end='')
 
-# print(stacks)
+# def main():
+# 	lines = []
+# 	for line in fileinput.input():
+# 	    lines.append(line)
+# 	max_height = int(input())
+# 	stacks = input_to_stacks(input())
+# 	stacks_original = list(stacks)
+# 	goal_stacks = input_to_stacks(input())
+# 	answer = a_star_cons(max_height,stacks,goal_stacks)
+# 	if answer:
+# 		cost, moves = answer
+# 		print(int(cost))
+# 		print(moves, end='')
+# 	else:
+# 		print('No solution found',end='')
+# # print(stacks)
 
 if __name__ == '__main__':
 	main()

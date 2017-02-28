@@ -89,7 +89,7 @@ def track_moves(state,moves):
 			break
 		current = moves[current[0]]
 		if current[0] in moves.keys():
-			search_string = str(current[2]) + ';' + search_string
+			search_string = str(current[2]) + '; ' + search_string
 	return search_string
 
 
@@ -100,7 +100,7 @@ def dfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(stack) == 0:
-			return 'No solution found'
+			return False
 		current_state = stack.pop()
 		moves[current_state][3] = True
 
@@ -114,6 +114,7 @@ def dfs(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print('Nodes: '+ str(len(moves.keys())))
 							return current_cost, track_moves(neu_state,moves)
 						stack.append(neu_state)
 
@@ -125,7 +126,7 @@ def bfs(max_height,stacks,goal_stacks):
 
 	while True:
 		if len(queue) == 0:
-			return 'No solution found'
+			return False
 		current_state = queue.pop()
 		moves[current_state][3] = True
 
@@ -139,6 +140,7 @@ def bfs(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print('Nodes: '+ str(len(moves.keys())))
 							return current_cost, track_moves(neu_state,moves)
 						queue.insert(0,neu_state)
 
@@ -166,6 +168,7 @@ def uniform_cost(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print('Nodes: '+ str(len(moves.keys())))
 							return current_cost, track_moves(neu_state,moves)
 						queue.put((cost+moves[current_state][1],neu_state))
 
@@ -207,7 +210,7 @@ def a_star_cons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return 'No solution found'
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -221,6 +224,7 @@ def a_star_cons(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							# print('Nodes: '+ str(len(moves.keys())))
 							return current_cost, track_moves(neu_state,moves)
 						priority_cost = current_cost + cons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
@@ -235,7 +239,7 @@ def a_star_incons(max_height,stacks,goal_stacks):
 
 	while True:
 		if queue.empty():
-			return 'No solution found'
+			return False
 		current_state = queue.get()[1]
 		moves[current_state][3] = True
 
@@ -249,6 +253,7 @@ def a_star_incons(max_height,stacks,goal_stacks):
 						moves[neu_state] = [current_state,cost+moves[current_state][1],(i,j), False]
 						current_cost = cost+moves[current_state][1]
 						if test_goal(neu_stacks, goal_stacks):
+							print('Nodes: '+ str(len(moves.keys())))
 							return current_cost, track_moves(neu_state,moves)
 						priority_cost = current_cost + incons_heuristic_cost(neu_stacks,goal_stacks)
 						queue.put((priority_cost,neu_state))
@@ -262,52 +267,52 @@ stacks_original = list(stacks)
 goal_stacks = input_to_stacks(input())
 
 
-print(stacks)
+# print(stacks)
 
 
-print("\nDFS")
-answer = dfs(max_height,stacks,goal_stacks)
-if answer:
-	cost, moves = answer
-	print(cost)
-	print(moves)
-else:
-	print('No solution found.')
+# print("\nDFS")
+# answer = dfs(max_height,stacks,goal_stacks)
+# if answer:
+# 	cost, moves = answer
+# 	print(int(cost))
+# 	print(moves, end='')
+# else:
+# 	print('No solution found',end='')
 
-print("\nBFS")
-answer = bfs(max_height,stacks,goal_stacks)
-if answer:
-	cost, moves = answer
-	print(cost)
-	print(moves)
-else:
-	print('No solution found.')
+# print("\nBFS")
+# answer = bfs(max_height,stacks,goal_stacks)
+# if answer:
+# 	cost, moves = answer
+# 	print(int(cost))
+# 	print(moves, end='')
+# else:
+# 	print('No solution found',end='')
 
-print("\nA*: Uniform Cost")
-answer = uniform_cost(max_height,stacks,goal_stacks)
-if answer:
-	cost, moves = answer
-	print(cost)
-	print(moves)
-else:
-	print('No solution found.')
+# print("\nA*: Uniform Cost")
+# answer = uniform_cost(max_height,stacks,goal_stacks)
+# if answer:
+# 	cost, moves = answer
+# 	print(int(cost))
+# 	print(moves, end='')
+# else:
+# 	print('No solution found',end='')
 
-print("\nA*: Cons")
+# print("\nA*: Cons")
 answer = a_star_cons(max_height,stacks,goal_stacks)
 if answer:
 	cost, moves = answer
-	print(cost)
-	print(moves)
+	print(int(cost))
+	print(moves, end='')
 else:
-	print('No solution found.')
+	print('No solution found',end='')
 
-print("\nA*: Incons")
-answer = a_star_incons(max_height,stacks,goal_stacks)
-if answer:
-	cost, moves = answer
-	print(cost)
-	print(moves)
-else:
-	print('No solution found.')
+# print("\nA*: Incons")
+# answer = a_star_incons(max_height,stacks,goal_stacks)
+# if answer:
+# 	cost, moves = answer
+# 	print(int(cost))
+# 	print(moves, end='')
+# else:
+# 	print('No solution found',end='')
 
-print(goal_stacks)
+# print(goal_stacks)

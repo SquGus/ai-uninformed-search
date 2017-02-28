@@ -39,7 +39,7 @@ def state_to_stack(state):
 
 def move_box(current,neu_position,stacks):
 	neu_stacks = stacks[:]
-	cost = 0.5 + abs(current - neu_position) + 0.5
+	cost = int(0.5 + abs(current - neu_position) + 0.5)
 	box = neu_stacks[current].pop()
 	neu_stacks[neu_position].append(box)
 	return neu_stacks, cost

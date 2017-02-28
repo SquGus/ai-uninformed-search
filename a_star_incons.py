@@ -66,8 +66,7 @@ def track_moves(state,moves):
 	return search_string
 
 def incons_heuristic_cost(current_stacks,goal_stacks):
-	# calcular manhattan?
-	# Se esta calculando a partir de cuantos stacks se tiene que mover cada caja
+	# Calculated as (number of stacks that each box should move)^2
 	total = 0
 	for i,stack in enumerate(goal_stacks):
 		if stack == 'X':
@@ -76,7 +75,7 @@ def incons_heuristic_cost(current_stacks,goal_stacks):
 			for j,box in enumerate(stack):
 				for k, current_stack in enumerate(current_stacks):
 					if box in current_stack:
-						total += abs(k-i)
+						total += (abs(k-i)) * (abs(k-i))
 	return total
 
 def a_star_incons(max_height,stacks,goal_stacks):
